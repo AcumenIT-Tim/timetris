@@ -119,7 +119,7 @@ for count in partNumber: #Adds part number
     gen_report(canvas, endTimex, y, "End Time", 1)
 
     y = y - 15
-    sql = "SELECT serial_number, operator, production_time, end_time FROM production WHERE part_number='" + count[0] + "' AND DATE(end_time)='" + today + "';" 
+    sql = "SELECT serial_number, operator, production_time, end_time FROM production WHERE part_number='" + count[0] + "' AND DATE(end_time)='" + today + "' ORDER BY end_time;" 
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
 
