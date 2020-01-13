@@ -39,26 +39,16 @@
         </script>
 
         <script>
+            function qualityAlert() {
+
+            }
             function checkNOK() {
                 var functionRes = document.getElementsByName("function_test");
                 var cosmeticRes = document.getElementsByName("cosmetic_test");
                 var traceabilityRes = document.getElementsByName("traceability_test");
 
-                if(functionRes[1].checked) {
-                    var res = confirm("Function Test marked NOK. Press OK to proceed or CANCEL to re-enter.");
-                    
-                    if(res) {
-                        return true
-                    }
-                    return false
-                } else {
-                    return true;
-                }
-
-
-                if(traceabilityRes[1].checked) {
-                    var res = confirm("Traceability Test marked NOK. Press OK to proceed or CANCEL to re-enter.");
-                    
+                if(functionRes[1].checked || cosmeticRes[1].checked || traceabilityRes[1].checked) {
+                    var res = confirm("Some fields are marked NOK. Press OK to proceed or CANCEL to re-enter.");
                     if(res) {
                         return true
                     }
