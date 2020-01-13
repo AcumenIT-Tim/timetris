@@ -1,0 +1,127 @@
+body {
+    background-color: #D8D8D8;
+    margin: 0px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    position: static;
+}
+/************************************************
+                    Header Styles
+************************************************/
+#header {
+    background-color: black;
+    color: white;
+    top:0;
+}
+#header_table {
+    width: 100%;
+}
+
+
+#title_cell {
+    width: 600px;
+}
+
+#title {
+    margin-left: 10%;
+    
+    width: 600px;
+}
+
+#logo {
+    margin-left: 15%;
+    height: 50px;
+    position: static;
+}
+
+#time {
+    margin-left: 60%;
+}
+
+/************************************************
+                    Form Styles
+************************************************/
+
+#form {
+    margin: 0 auto;
+    width: 500px;
+    /* Form outline */
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+}
+
+form div + div {
+    margin-top: 1em;
+}
+
+label {
+    display: inline-block;
+    width: 145px;
+    text-align: right;
+    font-size: 18pt;
+    padding-right: 10px;
+}
+#struct_serial_number_input{
+    font-size: 16pt;
+}
+
+input {
+  font-size: 20pt;
+  /* Uniform text field size */
+  width: 300px;
+  box-sizing: border-box;
+
+  /* Match form field borders */
+  border: 1px solid #999;
+}
+
+/* Removes number spinner */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+p {
+    width: 100%;
+    font-size: 19pt;
+    margin-left: 60px;
+}
+.radio{
+    width: 15px;
+    margin-left: 125px;
+    size: 1em;
+}
+
+.clear_btn {
+    font-size: 15pt;
+    background:none;
+    border: none;
+}
+
+.btn {
+    background: none;
+    border: none; /* Remove borders */
+    color: rgb(255, 140, 0);
+    padding: 12px 16px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+    padding-left: 45%;
+    margin-left: .5em;
+
+}
+
+input[type=radio] { 
+    transform: scale(2, 2); 
+    
+    }
+
+.rgroup {
+    padding-left: 50px;
+}
+
+

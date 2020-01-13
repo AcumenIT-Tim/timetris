@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>EOL Database Form</title>
+        <link rel="stylesheet" href="lib\styles.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <script id="time_script">
+            function startTime() {
+                var today = new Date();
+                var mo = today.getMonth();
+                var d = today.getDate();
+                var y = today.getFullYear();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                var tod = "AM"
+                m = checkTime(m);
+                s = checkTime(s);
+
+                if (h > 12) {
+                    h = h - 12;
+                    tod = "PM";
+                }
+
+                document.getElementById('time').innerHTML =
+                mo + "/" + d + "/" + y + "<br>" + h + ":" + m + ":" + s + " " + tod;
+                var t = setTimeout(startTime, 500);
+            }
+            function checkTime(i) {
+                if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                return i;
+            }
+        </script>
+
+        <script type="text/javascript">
+            window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+        </script>
+
+        <script>
+            function checkNOK() {
+                var functionRes = document.getElementsByName("function_test");
+                var cosmeticRes = document.getElementsByName("cosmetic_test");
+                var traceabilityRes = document.getElementsByName("traceability_test");
+
+                if(functionRes[1].checked) {
+                    var res = confirm("Function Test marked NOK. Press OK to proceed or CANCEL to re-enter.");
+                    
+                    if(res) {
+                        return true
+                    }
+                    return false
+                } else {
+                    return true;
+                }
+
+                if(cosmeticRes[1].checked) {
+                    var res = confirm("Cosmetic Test marked NOK. Press OK to proceed or CANCEL to re-enter.");
+                    
+                    if(res) {
+                        return true
+                    }
+                    return false
+                } else {
+                    return true;
+                }
+
+                if(traceabilityRes[1].checked) {
+                    var res = confirm("Traceability Test marked NOK. Press OK to proceed or CANCEL to re-enter.");
+                    
+                    if(res) {
+                        return true
+                    }
+                    return false
+                } else {
+                    return true;
+                }
+            }
+        </script>
+    </head>
+    <body onload="startTime()">
+        <header id="header">
+        <div>
+            <table id="header_table">
+                <tr>
+                    <td id="title_cell"><h2 id="title">EOL-Database-Form</h2></td>
+                    <td id="logo_cell"><img src="lib\LOGO-ISRI.png" alt="Isri Logo" id="logo"></td>
+                    <td id="time_cell"><div id="time"></div></td>
+                </tr>
+
+            </table>
+            </div>
+        </header>
+
+        <section id="form">               
+            <form onsubmit="return checkNOK()" name="form" action="EOL_Script.php" method="post" autocomplete="off" >
+                 <div>
+                    <label id="serial_number_input">Serial Number: </label>
+                    <input type="number" name="serial_number" id="serial_number" required>
+                    <button type="button" id="serial_clear_btn" class="clear_btn" onclick="document.getElementById('serial_number').value = ''">
+                            <i class="far fa-times-circle"></i>
+                    </button> <br>
+                </div>   
+                
+                <div>
+                    <label>ISRI Part Number:</label>
+                    <input type="text" name="part_number" id="part_number" required> 
+                    <button type="button" id="part_clear_btn" class="clear_btn" onclick="document.getElementById('part_number').value = ''">
+                            <i class="far fa-times-circle"></i>
+                    </button> <br>
+                </div>
+                
+                <div>
+                    <label>Operator: </label>
+                    <input type="text" name="operator" id="operator" required>
+                    <button type="button" id="operator_clear_btn" class="clear_btn" onclick="document.getElementById('operator').value = ''">
+                            <i class="far fa-times-circle"></i>
+                    </button> <br>
+                </div>
+
+                <div class="rgroup">
+                    <p class="inspection" id="function">Did the seat pass all EOL tests?</p>
+                    <input type="radio" class = "radio" name="function_test"  value="0" required> Yes
+                    <input type="radio" class = "radio" name="function_test" value="1" required> No
+                    <br>
+                </div>
+                 
+                <div class="rgroup">
+                    <p class="inspection" id="cosmetic">Is the seat appearance acceptable?</p>
+                    <input type="radio" class = "radio" name="cosmetic_test" value="0" required> Yes
+                    <input type="radio" class = "radio" name="cosmetic_test" value="1" required> No
+                    
+                </div>
+
+                <div class="rgroup">
+                    <p class="inspection" id="traceability">Do all the serial numbers and part<br>numbers on the box label match the<br>label on the seat? </p>
+                    <input type="radio" class = "radio" name="traceability_test" value="0"  required> Yes
+                    <input type="radio" class = "radio" name="traceability_test" value="1"  required> No
+                    <br>
+                </div>
+
+                <button type="submit" value="Submit" id = "submit_button" class="btn">
+                    <i class="fas fa-caret-square-right fa-7x"></i>
+                </button>
+            </form>
+        </section>
+    </body>

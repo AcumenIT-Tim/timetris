@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>NTS Productivity Tracker</title>
+        <link rel="stylesheet" href="lib\styles.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+        <!--
+            Displays current date and time in the header
+        -->
+        <script id="time_script">
+            function startTime() {
+                var today = new Date();
+                var mo = today.getMonth();
+                var d = today.getDate();
+                var y = today.getFullYear();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                var tod = "AM"
+                m = checkTime(m);
+                s = checkTime(s);
+
+                if (h > 12) {
+                    h = h - 12;
+                    tod = "PM";
+                }
+
+                document.getElementById('time').innerHTML =
+                mo + "/" + d + "/" + y + "<br>" + h + ":" + m + ":" + s + " " + tod;
+                var t = setTimeout(startTime, 500);
+            }
+            function checkTime(i) {
+                if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                return i;
+            }
+        </script>
+        <script type="text/javascript">
+            window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+        </script>
+    
+        <script>
+                function validPN() {
+                    var pn = document.forms["form"]["part_number"].value;
+                    var pattern = /[0-9]+-[0-9]+\/[00-99]/;
+
+                    if (pattern.test(pn)) {
+                        return true;
+                    }
+                    else {
+                        alert("Invalid Part Number. Ex: 86721-04/07");
+                        return false;
+                    }
+                }
+                
+                function checkStruct() {
+                    var part_number_entry = document.forms["form"]["part_number"].value;
+                    var struct_num_entry  = document.forms["form"]["struct_serial_number"];
+                    var pattern = /86818|86728|86727/;
+
+                    if(pattern.test(part_number_entry)) {
+                        if(struct_num_entry.value.length == 0) {
+                            alert("This part number requires a structure serial number.");
+                            return false;
+                        }
+                    }
+                }
+            </script>
+    </head>
+    <body onload="startTime()">
+        <header id="header">
+            <table id="header_table">
+                <tr>
+                    <td id="title_cell"><h2 id="title">NTS-Start-Database-Form</h2></td>
+                    <td id="logo_cell"><img src="lib\LOGO-ISRI.png" alt="Isri Logo" id="logo"></td>
+                    <td id="time_cell"><div id="time"></div></td>
+                </tr>
+
+            </table>
+        </header>
+
+        <section id="form">
+            
+               
+            <form action="dbconn.php"  onsubmit="return validPN()" name="form" method="post" autocomplete="off">
+                <div>                    
+                    <label for="serial_number" id="serial_number_input">Serial Number </label>
+                    <input type="number" name="serial_number" id="serial_number" required>
+                </div>
+
+                <div> 
+                    <label for="part_number">ISRI Part Number </label>
+                    <input type="text" name="part_number" id="part_number" required> 
+                </div>
+
+                <div>                    
+                    <label for="struct_serial_number" id="struct_serial_number_input">Structure Serial Number </label>
+                    <input type="text" name="struct_serial_number" id="struct_serial_number">
+                </div>
+               
+                <div>   
+                    <label for="order_number">Order # </label>
+                    <input type="number" name="order_number" id="order_number" required>
+                </div>
+
+                <div> 
+                    <label for="operator">Operator </label>
+                    <input type="text" name="operator" id="operator" required>
+                </div>
+
+                <button type="submit" value="Submit" id = "submit_button" class="btn">
+                    <i class="fas fa-caret-square-right fa-7x"></i>
+                </button>
+            </form>
+
+            
+         
+
+        </section>
+    </body>
