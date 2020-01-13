@@ -86,6 +86,8 @@ sql = "SELECT COUNT(serial_number) FROM production WHERE DATE(end_time)='" + tod
 mycursor.execute(sql)
 myresult = mycursor.fetchone()
 total = myresult[0]
+if total == 0:
+    sys.exit()
 
 filename = "L:\\110-Program Management\\Galesburg Transfer\\Production Reports\\production_report_" + today +".pdf"
 canvas = canvas.Canvas(filename, pagesize = letter)
@@ -100,11 +102,12 @@ canvas.setFont('Helvetica', 12)
 gen_report(canvas, 500, 750, today, 0)
 
 # Starting X and Y values for the report
-partx = 30
-serialx = 45
-opx = 120
-timex = 250
+partx     = 30
+serialx   = 45
+opx       = 120
+timex     = 250
 nokCountx = 350
+endTimex = 425
 y = 715
 
 for count in partNumber: #Adds part number
@@ -113,18 +116,22 @@ for count in partNumber: #Adds part number
     gen_report(canvas, opx, y, "Operator", 1)
     gen_report(canvas, timex, y, "Prod Time (min)", 1)
     gen_report(canvas, nokCountx, y, "NOK Count", 1)
+    gen_report(canvas, endTimex, y, "End Time", 1)
 
     y = y - 15
-    sql = "SELECT serial_number, operator, production_time FROM production WHERE part_number='" + count[0] + "' AND DATE(end_time)='" + today + "';" 
+    sql = "SELECT serial_number, operator, production_time, end_time FROM production WHERE part_number='" + count[0] + "' AND DATE(end_time)='" + today + "';" 
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
 
+    
+
     i = 0
     for c in myresult: # Adds indvidual seats to the report
-        gen_report(canvas, serialx, y, str(c[0]), 0)
-        gen_report(canvas, opx, y, c[1], 0)
-        gen_report(canvas, timex, y, str(c[2]), 0)
-        gen_report(canvas, nokCountx, y, nokCounter(mycursor, c[0]), 0)
+        gen_report(canvas, serialx, y, str(c[0]), 0) #add serial
+        gen_report(canvas, opx, y, c[1], 0)          # add operator
+        gen_report(canvas, timex, y, str(c[2]), 0)   # add nprod time
+        gen_report(canvas, nokCountx, y, nokCounter(mycursor, c[0]), 0) # add NOK count
+        gen_report(canvas, endTimex, y, str(c[3])[11:16], 1) # convert time to string, remove the date and the seconds
 
         i +=1
         y = y - 15
