@@ -1,0 +1,9 @@
+{
+    "name": "admin_kromer/timetris",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.1",
+        "stevenmaguire/oauth2-microsoft": "^2.2"
+    },
+    "license": "MIT"
+}

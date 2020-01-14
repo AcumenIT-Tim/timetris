@@ -1,4 +1,9 @@
 <?php
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+    require 'vendor/autoload.php';
+
     $servername = "10.73.104.141";
     $username = "kromer";
     $password = "Start123!";
@@ -40,7 +45,7 @@
 
 //  If it's a new seat, add new entry. If seat is coming from rework, update existing.
     if(!finishCheck($conn, $serial_number)) {
-        if(!nokCheck($function_test, $cosmetic_test, $traceability)) {
+        if(!nokCheck($function_test, $cosmetic_test, $traceability, $serial_number)) {
             newEntry($conn, $serial_number, $part_number, $operator,"NULL",
                 $function_test, $cosmetic_test, $traceability);
         }
@@ -57,7 +62,7 @@
             $conn->close();
             redirect();
         }
-        if(!nokCheck($function_test, $cosmetic_test, $traceability)) {
+        if(!nokCheck($function_test, $cosmetic_test, $traceability, $serial_number)) {
             updateEntry($conn, $serial_number, "NULL",
                 $function_test, $cosmetic_test, $traceability);
         }
@@ -180,12 +185,51 @@ function setProdEnd($conn, $serial) {
 }
 
 
-function nokCheck($func, $cos, $trace) {
+function nokCheck($func, $cos, $trace, $serial) {
     if($func or $cos or $trace) {
+        nokAlert($serial);
         return false;
     }
     else{
         return true;
     }
+}
+
+function nokAlert($serial) {
+    $mail = new PHPMailer(true);
+
+try {
+    //Server settings
+    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+    $mail->isSMTP();                                            // Send using SMTP
+    $mail->Host       = 'smtp.office365.com';                        // Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+    $mail->Username   = 'reports@isriusa.com';                     // SMTP username
+    $mail->Password   = 'Isri123!';                               // SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+    $mail->Port       = 587;                                    // TCP port to connect to
+
+    //Recipients
+    $mail->setFrom('reports@isriusa.com', 'Isri Reports');
+    $mail->addAddress('q-alerts@isriusa.com');     // Add a recipient             // Name is optional
+    $mail->addReplyTo('reports@isriusa.com');
+    // $mail->addCC('cc@example.com');
+    // $mail->addBCC('bcc@example.com');
+
+    // Attachments
+    // $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+    // Content
+    $msg = $serial." has failed a quality inspection.";
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Commercial Vehicle Q-Alert';
+    $mail->Body    = $msg;
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
 }
 ?> 
